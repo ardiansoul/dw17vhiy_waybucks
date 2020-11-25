@@ -5,12 +5,15 @@ import ProductItem from "../components/ProductItem";
 import Login from "../components/Login";
 import { getProducts } from "../API/product";
 
-function LandingPage() {
+function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
   return (
     <>
       <div className="w-full relative">
-        <Login />
-        <Header />
+        <Header
+          isLogin={isLogin}
+          showModalLogin={showModalLogin}
+          showModalRegister={showModalRegister}
+        />
         <div className="h-screen w-8/12 relative">
           <div
             className="w-full mt-12 ml-32 bg-base rounded-md relative flex p-16"
