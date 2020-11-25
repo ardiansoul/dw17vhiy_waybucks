@@ -3,15 +3,15 @@ import product2 from "../assets/images/product2.jpeg";
 import product3 from "../assets/images/product3.jpeg";
 import product4 from "../assets/images/product4.jpeg";
 
-export const products = [
+export const getProducts = [
   {
     photo: product1,
-    title: "Ice Coffe Palm Sugar",
+    title: "Hanami Latte",
     price: 27000,
   },
   {
     photo: product2,
-    title: "Ice Coffe Palm Sugar",
+    title: "Ice Cappucino Coffe",
     price: 27000,
   },
   {
@@ -21,7 +21,7 @@ export const products = [
   },
   {
     photo: product4,
-    title: "Ice Coffe Palm Sugar",
+    title: "Ice Coffe Green Tea",
     price: 27000,
   },
 ];

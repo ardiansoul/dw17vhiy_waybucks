@@ -2,14 +2,14 @@ import React from "react";
 import Header from "../components/Header";
 import jumbotron from "../assets/images/jumbotron.jpg";
 import ProductItem from "../components/ProductItem";
-// import Login from "../components/Login";
-import { products } from "../data/product";
+import Login from "../components/Login";
+import { getProducts } from "../API/product";
 
 function LandingPage() {
   return (
     <>
-      {/* <Login /> */}
       <div className="w-full relative">
+        <Login />
         <Header />
         <div className="h-screen w-8/12 relative">
           <div
@@ -56,7 +56,7 @@ function LandingPage() {
             Let's Order
           </h1>
           <div className="w-12/12 h-auto flex flex-wrap mt-4 justify-between">
-            {products.map((product) => {
+            {getProducts.map((product) => {
               return (
                 <ProductItem
                   photo={product.photo}

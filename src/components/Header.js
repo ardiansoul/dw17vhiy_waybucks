@@ -15,7 +15,10 @@ function Header() {
       <div className="w-56 flex justify-between items-center">
         {isLogin === false ? (
           <>
-            <button className="w-24 h-8 bg-white border-2 border-base rounded-md text-base">
+            <button
+              className="w-24 h-8 bg-white border-2 border-base rounded-md text-base"
+              onClick
+            >
               Login
             </button>
             <button className="w-24 h-8 bg-base border-2 border-base rounded-md text-white">
