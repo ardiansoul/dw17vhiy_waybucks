@@ -6,6 +6,7 @@ function Login({ showModalRegister, showModalLogin, handleLogin }) {
     email: "",
     password: "",
   });
+  const [isError, setIsError] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,6 +23,8 @@ function Login({ showModalRegister, showModalLogin, handleLogin }) {
         localStorage.setItem("password", form.password);
         handleLogin();
         showModalLogin();
+      } else {
+        setIsError("email or password salah");
       }
     }
   };
@@ -30,7 +33,7 @@ function Login({ showModalRegister, showModalLogin, handleLogin }) {
       <div
         className="w-64 bg-white absolute z-50 border-2 rounded-md flex flex-col justify-between p-6"
         style={{
-          height: "400px",
+          minHeight: "400px",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -39,6 +42,11 @@ function Login({ showModalRegister, showModalLogin, handleLogin }) {
         <h1 className="fontFamily-freight font-bold text-3xl text-base">
           Login
         </h1>
+        {isError && (
+          <span className="bg-base w-full h-10 text-white text-center rounded-md leading-10 mt-4">
+            {isError}
+          </span>
+        )}
         <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
           <label className="text-base mb-2">Email</label>
           <input

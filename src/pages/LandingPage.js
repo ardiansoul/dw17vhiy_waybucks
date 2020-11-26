@@ -62,6 +62,8 @@ function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
             {getProducts.map((product) => {
               return (
                 <ProductItem
+                  key={product.id}
+                  id={product.id}
                   photo={product.photo}
                   title={product.title}
                   price={product.price}

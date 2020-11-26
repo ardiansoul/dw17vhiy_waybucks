@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import LandingPage from "./pages/LandingPage";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
   const [isLogin, setisLogin] = useState(false);
@@ -42,8 +43,15 @@ function App() {
 
       <Router>
         <Switch>
-          <Route to="/">
+          <Route path="/" exact>
             <LandingPage
+              isLogin={isLogin}
+              showModalLogin={showModalLogin}
+              showModalRegister={showModalRegister}
+            />
+          </Route>
+          <Route path="/products/:id" exact>
+            <ProductPage
               isLogin={isLogin}
               showModalLogin={showModalLogin}
               showModalRegister={showModalRegister}
