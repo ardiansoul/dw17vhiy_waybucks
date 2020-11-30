@@ -1,0 +1,42 @@
+export const getTransaction = [
+  {
+    id: 1,
+    name: "Ardian ini",
+    address: "tangerang",
+    postCode: 12940,
+    income: 12000,
+    status: "Waiting Approve",
+  },
+  {
+    id: 2,
+    name: "Justine",
+    address: "Jakarta",
+    postCode: 12940,
+    income: 35000,
+    status: "Success",
+  },
+  {
+    id: 3,
+    name: "Markus",
+    address: "Bandung",
+    postCode: 10422,
+    income: 49000,
+    status: "Waiting Approve",
+  },
+  {
+    id: 4,
+    name: "randi",
+    address: "Solo",
+    postCode: 42011,
+    income: 90000,
+    status: "Success",
+  },
+  {
+    id: 5,
+    name: "Ardian ini",
+    address: "tangerang",
+    postCode: 12940,
+    income: 42000,
+    status: "Cancel",
+  },
+];

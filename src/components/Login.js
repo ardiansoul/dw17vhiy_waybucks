@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getUser } from "../API/user";
+import { AppContext } from "../context/AuthContext";
 
-function Login({ showModalRegister, showModalLogin, handleLogin }) {
+function Login({ showModalRegister, showModalLogin }) {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    // role: "admin",
   });
   const [isError, setIsError] = useState("");
+  const [state, dispatch] = useContext(AppContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,20 +17,20 @@ function Login({ showModalRegister, showModalLogin, handleLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    for (let i = 0; i < getUser.length; i++) {
-      if (
-        form.email === getUser[i].email &&
-        form.password === getUser[i].password
-      ) {
-        localStorage.setItem("email", form.email);
-        localStorage.setItem("password", form.password);
-        handleLogin();
-        showModalLogin();
-      } else {
-        setIsError("email or password salah");
-      }
+    const formLogin = getUser.find((user) => user.email === form.email);
+    if (formLogin) {
+      localStorage.setItem("email", form.email);
+      localStorage.setItem("password", form.password);
+      dispatch({
+        type: "LOGIN",
+        payload: formLogin.role,
+      });
+      showModalLogin();
+    } else {
+      setIsError("email or password salah");
     }
   };
+
   return (
     <div className="w-screen h-screen bg-transparent absolute">
       <div

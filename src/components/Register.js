@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../context/AuthContext";
 
-function Register({ showModalLogin, handleLogin, showModalRegister }) {
+function Register({ showModalLogin, showModalRegister }) {
   const [form, setForm] = useState({
     email: "",
     password: "",
     fullName: "",
   });
+
+  const [state, dispatch] = useContext(AppContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +18,9 @@ function Register({ showModalLogin, handleLogin, showModalRegister }) {
     e.preventDefault();
     localStorage.setItem("email", form.email);
     localStorage.setItem("password", form.password);
-    handleLogin();
+    dispatch({
+      type: "LOGIN",
+    });
     showModalRegister();
   };
 

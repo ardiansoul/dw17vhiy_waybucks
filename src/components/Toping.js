@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 
-function Toping({ id, photo, title }) {
+function Toping({ toping, handleToping }) {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheck = () => {
+    handleToping(toping);
     setIsChecked(!isChecked);
   };
 
   return (
     <div className="w-24 h-24 m-5 relative flex flex-col items-center">
       <img
-        src={photo}
-        alt={title}
+        src={toping.photo}
+        alt={toping.title}
         className="w-12 h-12 object-cover object-center rounded-full"
         onClick={handleCheck}
       />
       <input
         type="checkbox"
         name="toping"
+        // onChange={() => handleToping(id)}
         checked={isChecked}
         className="absolute"
         style={{
@@ -31,7 +33,7 @@ function Toping({ id, photo, title }) {
           fontSize: "12px",
         }}
       >
-        {title}
+        {toping.title}
       </p>
       {/* <div className="w-12 h-12">
       <img src={photo} alt={title} />

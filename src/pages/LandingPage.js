@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../components/Header";
 import jumbotron from "../assets/images/jumbotron.jpg";
 import ProductItem from "../components/ProductItem";
 import Login from "../components/Login";
 import { getProducts } from "../API/product";
+import { AppContext } from "../context/AuthContext";
+import { Redirect } from "react-router-dom";
 
 function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
+  const [state] = useContext(AppContext);
+
   return (
     <>
+      {state.role === "admin" && <Redirect to="/admin/transaction" />}
       <div className="w-full relative">
         <Header
           isLogin={isLogin}

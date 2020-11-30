@@ -8,7 +8,7 @@ function ProductItem({ id, photo, title, price }) {
   });
   return (
     <Link to={`/products/${id}`}>
-      <div className="w-48 flex flex-col rounded-md shadow-2xl">
+      <div className="w-48 flex flex-col rounded-md shadow-2xl my-5">
         <img
           src={photo}
           alt={title}
