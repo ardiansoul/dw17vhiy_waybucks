@@ -577,6 +577,15 @@ video {
   height: auto;
 }
 
+button:focus {
+  outline: none;
+}
+
+input[type="text"]:focus,
+  textarea:focus {
+  outline: none;
+}
+
 .container {
   width: 100%;
 }

@@ -1,34 +1,53 @@
+import Axios from "axios";
 import React, { useContext, useState } from "react";
+import { useMutation } from "react-query";
 import { AppContext } from "../context/AuthContext";
+import { baseUrl } from "../Utils/API";
 
 function Register({ showModalLogin, showModalRegister }) {
+  const [mutate, { error, data }] = useMutation(
+    (form) => Axios.post(`${baseUrl}auth/register`, form),
+    {
+      onSuccess: (data) => {
+        return data;
+      },
+      onError: (error) => {
+        return error;
+      },
+    }
+  );
+
   const [form, setForm] = useState({
     email: "",
     password: "",
     fullName: "",
   });
-
   const [state, dispatch] = useContext(AppContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("email", form.email);
-    localStorage.setItem("password", form.password);
-    dispatch({
-      type: "LOGIN",
-    });
-    showModalRegister();
+    try {
+      await mutate(form);
+      dispatch({
+        type: "LOGIN",
+        payload: data.data.data,
+      });
+      showModalRegister();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className="w-screen h-screen bg-transparent absolute">
       <div
-        className="w-64 bg-white absolute z-50 border-2 rounded-md flex flex-col justify-between p-6"
+        className="bg-white absolute z-50 border-2 rounded-md flex flex-col justify-between p-6"
         style={{
+          width: "300px",
           height: "500px",
           top: "50%",
           left: "50%",
@@ -38,7 +57,13 @@ function Register({ showModalLogin, showModalRegister }) {
         <h1 className="fontFamily-freight font-bold text-3xl text-base">
           Register
         </h1>
+        {/* {state.error && <div>{error}</div>} */}
         <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
+          {error && (
+            <span className="w-full h-10 text-xs text-center mb-2 leading-10 text-white bg-base rounded-md">
+              {error.response.data.message}
+            </span>
+          )}
           <label className="text-base mb-2">Email</label>
           <input
             type="text"
@@ -67,7 +92,7 @@ function Register({ showModalLogin, showModalRegister }) {
             className="w-24 h-8 bg-base border-2 mt-4 border-base rounded-md text-white self-center"
             type="submit"
           >
-            Login
+            Register
           </button>
         </form>
         <span className="text-sm mt-2 self-center">

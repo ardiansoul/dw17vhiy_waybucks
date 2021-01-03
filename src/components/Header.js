@@ -56,6 +56,9 @@ function Header({ showModalLogin, showModalRegister }) {
                 alt="user"
                 className="w-12 h-12 rounded-full object-cover object-center"
                 onClick={handleDropdown}
+                style={{
+                  cursor: "pointer",
+                }}
               />
             </>
           ) : (
@@ -78,6 +81,9 @@ function Header({ showModalLogin, showModalRegister }) {
                 alt="user"
                 className="w-12 h-12 rounded-full object-cover object-center"
                 onClick={handleDropdown}
+                style={{
+                  cursor: "pointer",
+                }}
               />
             </>
           )}

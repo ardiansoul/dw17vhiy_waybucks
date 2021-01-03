@@ -1,20 +1,23 @@
-import {
-  faCheckCircle,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getTransaction } from "../API/transaction";
+import { useQuery } from "react-query";
 import Header from "../components/Header";
+import TransactionList from "../components/TransactionList";
+import { baseUrl } from "../Utils/API";
 
 function TransPage() {
+  const { isLoading, isError, error, data, refetch } = useQuery(
+    "TransData",
+    () => {
+      return Axios.get(`${baseUrl}api/v1/transactions`);
+    }
+  );
+
   const [alert, setAlert] = useState("");
-  const handleButton = (e, transaction) => {
-    e.preventDefault();
-    console.log(transaction);
-    // console.log(e.target.name);
-    setAlert(e.target.name);
-  };
+
+  console.log("transaction", data);
 
   useEffect(() => {
     setTimeout(() => {
@@ -26,7 +29,7 @@ function TransPage() {
     <div className="w-full relative">
       <Header />
       {alert ? (
-        alert === "cancel" ? (
+        alert === "Cancel" ? (
           <div
             className="w-48 h-10 absolute bg-red-200 text-red-800 text-center leading-10 rounded-md"
             style={{
@@ -50,76 +53,23 @@ function TransPage() {
       ) : (
         ""
       )}
-      <div className="w-10/12 m-auto">
-        <h1 className="text-base font-bold text-4xl fontFamily-freight">
-          Income Transaction
-        </h1>
-        <table className="w-full mt-6">
-          <tr className="bg-red-800 h-10 text-white">
-            <th>No</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Post Code</th>
-            <th>Income</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-          {getTransaction.map((transaction) => (
-            <tr className="h-12 text-center">
-              <td>{transaction.id}</td>
-              <td>{transaction.name}</td>
-              <td>{transaction.address}</td>
-              <td>{transaction.postCode}</td>
-              <td className="text-blue-600">{transaction.income}</td>
-              <td
-                className={`${
-                  transaction.status === "Success"
-                    ? "text-green-600"
-                    : transaction.status === "Cancel"
-                    ? "text-red-600"
-                    : "text-yellow-600"
-                } text-sm font-bold`}
-              >
-                {transaction.status}
-              </td>
-              <td>
-                {transaction.status === "Success" ? (
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    className="text-green-600"
-                  />
-                ) : transaction.status === "Cancel" ? (
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    className="text-red-600"
-                  />
-                ) : (
-                  <>
-                    <button
-                      className="w-20 h-8 bg-red-600 text-white mr-4 rounded-md"
-                      name="cancel"
-                      onClick={(e, transaction) => {
-                        handleButton(e, transaction);
-                      }}
-                    >
-                      cancel
-                    </button>
-                    <button
-                      className="w-20 h-8 bg-green-600 text-white rounded-md"
-                      name="approve"
-                      onClick={(e, transaction) => {
-                        handleButton(e, transaction);
-                      }}
-                    >
-                      approve
-                    </button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </table>
-      </div>
+      {isLoading ? (
+        <div className="w-full h-screen flex justify-center items-center">
+          <FontAwesomeIcon icon={faSpinner} spin size="6x" />
+        </div>
+      ) : isError ? (
+        <div>{error}</div>
+      ) : (
+        <div className="w-10/12 m-auto">
+          <h1 className="text-base font-bold text-4xl fontFamily-freight">
+            Income Transaction
+          </h1>
+          <TransactionList
+            refetch={refetch}
+            transactions={data.data.data.transaction}
+          />
+        </div>
+      )}
     </div>
   );
 }

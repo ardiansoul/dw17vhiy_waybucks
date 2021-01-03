@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { AppContext } from "../context/AuthContext";
+import topingIcon from "../assets/images/toppingIcon.png";
+import productIcon from "../assets/images/productIcon.png";
 
 function Dropdown({ handleDropdown }) {
   const [state, dispatch] = useContext(AppContext);
@@ -49,7 +51,8 @@ function Dropdown({ handleDropdown }) {
                 cursor: "pointer",
               }}
             >
-              <FontAwesomeIcon icon={faUserAlt} className="mr-2 text-base" />
+              <img src={productIcon} alt="topingIcon" className="w-5 mr-2" />
+              {/* <FontAwesomeIcon icon={faUserAlt} className="mr-2 text-base" /> */}
               <h3 className="text-base text-lg font-bold">Add Product</h3>
             </button>
             <button
@@ -61,7 +64,8 @@ function Dropdown({ handleDropdown }) {
                 cursor: "pointer",
               }}
             >
-              <FontAwesomeIcon icon={faUserAlt} className="mr-2 text-base" />
+              <img src={topingIcon} alt="topingIcon" className="w-6 mr-2" />
+              {/* <FontAwesomeIcon icon={faUserAlt} className="mr-2 text-base" /> */}
               <h3 className="text-base text-lg font-bold">Add Toping</h3>
             </button>
           </>
@@ -69,7 +73,7 @@ function Dropdown({ handleDropdown }) {
           <button
             className="w-40 h-12 flex items-center m-auto"
             onClick={() => {
-              router.push(`/user/1`);
+              router.push(`/user`);
             }}
             style={{
               cursor: "pointer",

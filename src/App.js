@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import Axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { QueryCache, ReactQueryCacheProvider, useQuery } from "react-query";
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,7 +9,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { AppContextProvider } from "./context/AuthContext";
+import { AppContext } from "./context/AuthContext";
 import AddProductPage from "./pages/AddProductPage";
 import AddTopingPage from "./pages/AddTopingPage";
 import CartPage from "./pages/CartPage";
@@ -16,10 +18,26 @@ import ProductPage from "./pages/ProductPage";
 import TransPage from "./pages/TransPage";
 import UserPage from "./pages/UserPage";
 import AdminRoute from "./Utils/AdminRoute";
+import { baseUrl } from "./Utils/API";
 import PrivateRoute from "./Utils/PrivateRoute";
 
+const queryCache = new QueryCache();
+
 function App() {
-  const [isLogin, setisLogin] = useState(false);
+  // const [state, dispatch] = useContext(AppContext);
+
+  // const { isLoading, isError, error, data } = useQuery("checkAuth", () => {
+  //   return Axios({
+  //     method: "GET",
+  //     url: `${baseUrl}auth/checkUser`,
+  //     headers: {
+  //       Authorization: localStorage.token,
+  //       withCredentials: true,
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //   });
+  // });
+
   const [modalLogin, setModalLogin] = useState(false);
   const [modalRegister, setModalRegister] = useState(false);
 
@@ -33,17 +51,42 @@ function App() {
     setModalLogin(false);
   };
 
-  const handleLogin = () => {
-    setisLogin(!isLogin);
-  };
+  // const loadUser = () => {
+  //   try {
+  //     console.log(data.data.data);
+  //     if (data.data.status === 401) {
+  //       return dispatch({
+  //         type: "AUTH_ERROR",
+  //       });
+  //     }
+  //     dispatch({
+  //       type: "USER_LOADED",
+  //       payload: data.data.data,
+  //     });
+  //   } catch (err) {
+  //     console.log(err);
+  //     dispatch({
+  //       type: "AUTH_ERROR",
+  //     });
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   loadUser();
+  // }, []);
 
   return (
+    // <>
+    //   {isLoading ? (
+    //     <div className="w-full h-screen flex justify-center items-center">
+    //       <FontAwesomeIcon icon={faSpinner} spin size="6x" />
+    //     </div>
+    //   ) : (
     <>
-      <AppContextProvider>
+      <ReactQueryCacheProvider queryCache={queryCache}>
         {modalLogin && (
           <Login
             showModalRegister={showModalRegister}
-            handleLogin={handleLogin}
             showModalLogin={showModalLogin}
           />
         )}
@@ -51,7 +94,6 @@ function App() {
           <Register
             showModalLogin={showModalLogin}
             showModalRegister={showModalRegister}
-            handleLogin={handleLogin}
           />
         )}
 
@@ -59,20 +101,18 @@ function App() {
           <Switch>
             <Route path="/" exact>
               <LandingPage
-                isLogin={isLogin}
                 showModalLogin={showModalLogin}
                 showModalRegister={showModalRegister}
               />
             </Route>
             <Route path="/products/:id" exact>
               <ProductPage
-                isLogin={isLogin}
                 showModalLogin={showModalLogin}
                 showModalRegister={showModalRegister}
               />
             </Route>
             <PrivateRoute exact path="/cart" component={CartPage} />
-            <PrivateRoute exact path="/user/:id" component={UserPage} />
+            <PrivateRoute exact path="/user" component={UserPage} />
             <AdminRoute exact path="/admin/transaction" component={TransPage} />
             <AdminRoute
               exact
@@ -84,11 +124,15 @@ function App() {
               path="/admin/add-toping"
               component={AddTopingPage}
             />
-            <Route> <Redirect to="/" /> </Route>
+            <Route>
+              <Redirect to="/" />
+            </Route>
           </Switch>
         </Router>
-      </AppContextProvider>
+      </ReactQueryCacheProvider>
     </>
+    //   )}
+    // </>
   );
 }
 

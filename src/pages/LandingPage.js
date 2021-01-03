@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
 import Header from "../components/Header";
 import jumbotron from "../assets/images/jumbotron.jpg";
-import ProductItem from "../components/ProductItem";
-import Login from "../components/Login";
-import { getProducts } from "../API/product";
 import { AppContext } from "../context/AuthContext";
 import { Redirect } from "react-router-dom";
 
-function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
+import ProductList from "../components/ProductList";
+
+function LandingPage({ showModalLogin, showModalRegister }) {
   const [state] = useContext(AppContext);
 
   return (
@@ -15,7 +14,6 @@ function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
       {state.role === "admin" && <Redirect to="/admin/transaction" />}
       <div className="w-full relative">
         <Header
-          isLogin={isLogin}
           showModalLogin={showModalLogin}
           showModalRegister={showModalRegister}
         />
@@ -27,13 +25,8 @@ function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
             }}
           >
             <div className="w-8/12 h-full text-white">
-              <h1
-                className="text-6xl -my-10 font-bold fontFamily-freight"
-                // style={{
-                //   fontFamily: "`Freight Sans`, sans",
-                // }}
-              >
-                WAYDUCKS
+              <h1 className="text-6xl -my-10 font-bold fontFamily-freight">
+                WAYSBUCKS
               </h1>
               <p className="my-10 text-2xl  fontFamily-avenir">
                 Things are changing, but we’re still here for you
@@ -63,19 +56,7 @@ function LandingPage({ isLogin, showModalLogin, showModalRegister }) {
           <h1 className="fontFamily-freight text-4xl text-base font-bold">
             Let's Order
           </h1>
-          <div className="w-12/12 h-auto flex flex-wrap mt-4 justify-between">
-            {getProducts.map((product) => {
-              return (
-                <ProductItem
-                  key={product.id}
-                  id={product.id}
-                  photo={product.photo}
-                  title={product.title}
-                  price={product.price}
-                />
-              );
-            })}
-          </div>
+          <ProductList />
         </div>
       </div>
     </>

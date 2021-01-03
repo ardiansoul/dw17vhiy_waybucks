@@ -1,33 +1,47 @@
+import Axios from "axios";
 import React, { useContext, useState } from "react";
-import { getUser } from "../API/user";
+import { useMutation } from "react-query";
 import { AppContext } from "../context/AuthContext";
+import { baseUrl } from "../Utils/API";
 
 function Login({ showModalRegister, showModalLogin }) {
+  const [mutate, { error, data }] = useMutation(
+    (form) => Axios.post(`${baseUrl}auth/login`, form)
+    // {
+    //   onSuccess: (data) => {
+    //     return data;
+    //   },
+    //   onError: (error) => {
+    //     return error;
+    //   },
+    // }
+  );
+
   const [form, setForm] = useState({
     email: "",
     password: "",
-    // role: "admin",
   });
-  const [isError, setIsError] = useState("");
+
   const [state, dispatch] = useContext(AppContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formLogin = getUser.find((user) => user.email === form.email);
-    if (formLogin) {
-      localStorage.setItem("email", form.email);
-      localStorage.setItem("password", form.password);
-      dispatch({
-        type: "LOGIN",
-        payload: formLogin.role,
+    try {
+      await mutate(form, {
+        onSuccess: (data) => {
+          dispatch({
+            type: "LOGIN",
+            payload: data.data,
+          });
+          showModalLogin();
+        },
       });
-      showModalLogin();
-    } else {
-      setIsError("email or password salah");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -36,7 +50,8 @@ function Login({ showModalRegister, showModalLogin }) {
       <div
         className="w-64 bg-white absolute z-50 border-2 rounded-md flex flex-col justify-between p-6"
         style={{
-          minHeight: "400px",
+          width: "300px",
+          height: "400px",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -45,9 +60,9 @@ function Login({ showModalRegister, showModalLogin }) {
         <h1 className="fontFamily-freight font-bold text-3xl text-base">
           Login
         </h1>
-        {isError && (
-          <span className="bg-base w-full h-10 text-white text-center rounded-md leading-10 mt-4">
-            {isError}
+        {error && (
+          <span className="w-full h-10 text-xs text-center mb-2 leading-10 text-white bg-base rounded-md">
+            {error.response.data.message}
           </span>
         )}
         <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
